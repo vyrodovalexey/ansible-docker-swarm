@@ -1,3 +1,0 @@
----
-# Default Ansible YAML
-- include_tasks: install-ntp.yaml
