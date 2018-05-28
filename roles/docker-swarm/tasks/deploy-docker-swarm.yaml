@@ -1,0 +1,17 @@
+- name: Check swarm
+  shell: docker node list | grep {{ inventory_hostname }} | awk '{print $4}'
+  register: docker_node_list
+
+- debug: msg="{{ docker_node_list.stdout }}"
+
+- name: Init swarm
+  shell: docker swarm init --advertise-addr 172.25.0.11
+  when: "'msc-001' in inventory_hostname and 'Ready' not in docker_node_list.stdout"
+
+- name: Register token
+  shell: docker swarm join-token manager | grep docker | awk '{print $5}'
+  register: swarm_token
+  when: "'msc-001' in inventory_hostname and 'Ready' in docker_node_list.stdout"
+
+- debug: msg="{{ swarm_token.stdout }}"
+

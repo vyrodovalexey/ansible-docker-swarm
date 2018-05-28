@@ -1,0 +1,46 @@
+- name: Check repo
+  stat:
+    path=/etc/yum.repos.d/docker-ce.repo
+  register: docker_repo
+
+
+
+- name: Install repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  when: docker_repo.stat.exists == False
+
+- name: Install docker-ce
+  yum:
+    name: docker-ce
+    state: latest
+
+- name: Create dir /etc/docker
+  file:
+    path: /etc/docker
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+
+- name: Copy daemon.json
+  copy: 
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  register: dockerconf
+
+- name: Start&enable docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Restart docker
+  service:
+    name: docker
+    state: restarted
+  when: dockerconf.changed
+

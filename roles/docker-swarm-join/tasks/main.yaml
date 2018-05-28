@@ -1,0 +1,4 @@
+---
+# Default Ansible YAML
+- include_tasks: deploy-docker-swarm-join.yaml
+

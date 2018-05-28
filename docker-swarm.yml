@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: root
+  strategy: free
+  roles:
+  - docker-ce
+    
+
+- hosts: docker-swarm
+  remote_user: root
+  strategy: free
+  roles:
+  - docker-swarm
+
+- hosts: docker-swarm-join
+  remote_user: root
+  strategy: free
+  roles:
+  - docker-swarm-join
+
