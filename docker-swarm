@@ -3,16 +3,14 @@ docker-swarm-init
 docker-swarm-join
 
 [cluster:vars]
-docker_lvm_device="/dev/md10"
-docker_insecure_regestries="172.26.1.101:5000"
-docker_swarm_ip_address="172.25.0.11"
-
-
+docker_lvm_device="/dev/md10"  #specify if required
+docker_insecure_regestries="172.26.1.101:5000"  #specify if required
+docker_swarm_ip_address="172.25.0.11"  #specify one of ip address of host in [docker-swarm-init]
 
 
 [docker-swarm-init]
-msc-001
-
+#Only one host must be specified
+msc-001 
 
 [docker-swarm-join]
 msc-002
