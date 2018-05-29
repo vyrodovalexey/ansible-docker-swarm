@@ -5,7 +5,9 @@ Docker swarm deployment
 Configuring.
 
 Clone repo:
+
 git clone https://github.com/vyrodovalexey/ansible-docker-swarm.git
+
 cd ansible-docker-swarm
 
 
