@@ -4,11 +4,15 @@
 
 - debug: msg="{{ docker_node_list.stdout }}"
 
-- name: Register token
-  shell: ssh msc-001 -X "docker swarm join-token manager" | grep docker | awk '{print $5}'
-  register: swarm_token
+
+- debug: msg="{{ hostvars['TOKEN_HOLDER']['token'] }}"
+
+#- name: Check ip addr
+#  shell: ip addr | grep {{ docker_swarm_ip_address }}
+#  register: docker_swarm_init
 
 - name: Join swarm
-  shell: docker swarm join --token {{ swarm_token.stdout }} 172.25.0.11:2377
-  when: "'msc-001' not in inventory_hostname and 'Ready' not in docker_node_list.stdout"
+  shell: docker swarm join --token {{ swarm_token.stdout }} {{ docker_swarm_ip_address }}:2377
+#  when: "docker_swarm_init.stdout=='' and 'Ready' not in docker_node_list.stdout"
+  when: "'Ready' not in docker_node_list.stdout"
 

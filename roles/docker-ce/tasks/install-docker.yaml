@@ -22,15 +22,49 @@
     owner: root
     group: root
 
+- name: Check that the /etc/docker/daemon.json exists
+  stat:
+    path: /etc/docker/daemon.json
+  register: docker_config_file
 
 - name: Copy daemon.json
   copy: 
-    src: daemon.json
+    src: daemon.json.st
     dest: /etc/docker/daemon.json
     owner: root
     group: root
     mode: 0644
   register: dockerconf
+  when: docker_lvm_device != '' and docker_config_file.stat.exists == False
+
+- name: Copy daemon.json
+  copy: 
+    src: daemon.json.reg
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  register: dockerconf
+  when: docker_lvm_device == '' and docker_insecure_regestries != '' and docker_config_file.stat.exists == False
+
+
+- name: Change daemon.json add storage
+  lineinfile:
+    path: /etc/docker/daemon.json
+    regexp: '"dm.directlvm_device=/dev/md10",'
+    line: '    "dm.directlvm_device={{ docker_lvm_device }}",'
+  when: docker_lvm_device != '' and docker_config_file.stat.exists == False
+  register: dockerconf
+
+
+- name: Change daemon.json add registry
+  lineinfile:
+    path: /etc/docker/daemon.json
+    regexp: '"insecure-registries"'
+    line: '  "insecure-registries" : ["{{ docker_insecure_regestries }}"]'
+  when:  docker_insecure_regestries != '' and docker_config_file.stat.exists == False
+  register: dockerconf
+
 
 - name: Start&enable docker
   service:

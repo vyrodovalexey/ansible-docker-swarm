@@ -6,15 +6,13 @@
   - docker-ce
     
 
-- hosts: docker-swarm
+- hosts: docker-swarm-init
   remote_user: root
-  strategy: free
   roles:
   - docker-swarm
 
 - hosts: docker-swarm-join
   remote_user: root
-  strategy: free
   roles:
   - docker-swarm-join
 
