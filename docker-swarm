@@ -1,18 +1,22 @@
 [cluster:children]
-docker-swarm-init
-docker-swarm-join
+docker-swarm
 
 [cluster:vars]
-docker_lvm_device="/dev/md10"  #specify if required
-docker_insecure_regestries="172.26.1.101:5000"  #specify if required
-docker_swarm_ip_address="172.25.0.11"  #specify one of ip address of host in [docker-swarm-init]
+##Specify dedicated device for docker. 
+##This configuration will be not applied if /etc/docker/daemon.json file exist on host.
+#
+#docker_lvm_device="/dev/md10"
+#
+##Specify insecure registries if required. 
+##This configuration will be not applied if /etc/docker/daemon.json file exist on host.
+#
+#docker_insecure_registries="172.26.1.101:5000"  
+#
 
 
-[docker-swarm-init]
-#Only one host must be specified
+[docker-swarm]
+#First host will be used for initialization
 msc-001 
-
-[docker-swarm-join]
 msc-002
 msc-003
 

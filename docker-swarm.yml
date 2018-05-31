@@ -6,12 +6,12 @@
   - docker-ce
     
 
-- hosts: docker-swarm-init
+- hosts: docker-swarm[0]
   remote_user: root
   roles:
-  - docker-swarm
+  - docker-swarm-init
 
-- hosts: docker-swarm-join
+- hosts: docker-swarm[1:1000]
   remote_user: root
   roles:
   - docker-swarm-join

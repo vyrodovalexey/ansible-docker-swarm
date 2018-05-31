@@ -5,14 +5,11 @@
 - debug: msg="{{ docker_node_list.stdout }}"
 
 
-- debug: msg="{{ hostvars['TOKEN_HOLDER']['token'] }}"
+- debug: msg="{{ hostvars['TOKENIP_HOLDER']['token'] }}"
 
-#- name: Check ip addr
-#  shell: ip addr | grep {{ docker_swarm_ip_address }}
-#  register: docker_swarm_init
+- debug: msg="{{ hostvars['TOKENIP_HOLDER']['ip'] }}"
 
 - name: Join swarm
-  shell: docker swarm join --token {{ swarm_token.stdout }} {{ docker_swarm_ip_address }}:2377
-#  when: "docker_swarm_init.stdout=='' and 'Ready' not in docker_node_list.stdout"
+  shell: docker swarm join --token {{ hostvars['TOKENIP_HOLDER']['token'] }} {{ hostvars['TOKENIP_HOLDER']['ip'] }}:2377
   when: "'Ready' not in docker_node_list.stdout"
 

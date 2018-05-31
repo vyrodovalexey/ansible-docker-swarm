@@ -35,7 +35,7 @@
     group: root
     mode: 0644
   register: dockerconf
-  when: docker_lvm_device != '' and docker_config_file.stat.exists == False
+  when: docker_lvm_device is defined and docker_config_file.stat.exists == False
 
 - name: Copy daemon.json
   copy: 
@@ -45,7 +45,7 @@
     group: root
     mode: 0644
   register: dockerconf
-  when: docker_lvm_device == '' and docker_insecure_regestries != '' and docker_config_file.stat.exists == False
+  when: docker_lvm_device is undefined and docker_insecure_registries is defined and docker_config_file.stat.exists == False
 
 
 - name: Change daemon.json add storage
@@ -53,7 +53,7 @@
     path: /etc/docker/daemon.json
     regexp: '"dm.directlvm_device=/dev/md10",'
     line: '    "dm.directlvm_device={{ docker_lvm_device }}",'
-  when: docker_lvm_device != '' and docker_config_file.stat.exists == False
+  when: docker_lvm_device is defined and docker_config_file.stat.exists == False
   register: dockerconf
 
 
@@ -62,7 +62,7 @@
     path: /etc/docker/daemon.json
     regexp: '"insecure-registries"'
     line: '  "insecure-registries" : ["{{ docker_insecure_regestries }}"]'
-  when:  docker_insecure_regestries != '' and docker_config_file.stat.exists == False
+  when:  docker_insecure_registries is defined and docker_config_file.stat.exists == True
   register: dockerconf
 
 

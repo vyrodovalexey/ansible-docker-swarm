@@ -1,0 +1,29 @@
+- name: Check swarm
+  shell: docker node list | grep {{ inventory_hostname }} | awk '{print $4}'
+  register: docker_node_list
+
+
+- debug: msg="{{ docker_node_list.stdout }}"
+
+- debug: msg="{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+- name: Init swarm
+  shell: docker swarm init --advertise-addr {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+  when: "'Ready' not in docker_node_list.stdout"
+  
+- name: Register token
+  shell: docker swarm join-token manager | grep docker | awk '{print $5}'
+  register: swarm_token
+  when: "'Ready' in docker_node_list.stdout"
+
+- name: "Add Token and ip to dummy host"
+  add_host:
+    name:   "TOKENIP_HOLDER"
+    token:  "{{ swarm_token.stdout }}"
+    ip:  "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+- debug: msg="{{ swarm_token.stdout }}"
+
+
+
+
