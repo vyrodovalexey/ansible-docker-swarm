@@ -3,15 +3,13 @@
   remote_user: root
   strategy: free
   roles:
-  - inventory-check
-
+  - docker-swarm-inventory-check
 
 - hosts: all
   remote_user: root
   strategy: free
   roles:
-  - docker-ce
-    
+  - docker-ce    
 
 - hosts: docker-swarm[0]
   remote_user: root
@@ -22,4 +20,3 @@
   remote_user: root
   roles:
   - docker-swarm-join
-
