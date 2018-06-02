@@ -2,7 +2,7 @@
 docker-swarm
 
 [cluster:vars]
-##Specify dedicated device for docker if required. 
+##Specify dedicated device for docker if required 
 ##This configuration will be not applied if /etc/docker/daemon.json file exist on host.
 #
 #docker_lvm_device="/dev/md10"
@@ -15,7 +15,8 @@ docker-swarm
 
 
 [docker-swarm]
-#First host will be used for initialization
+##First host will be used for initialization
+##Number of hosts must be >=3
 msc-001 
 msc-002
 msc-003

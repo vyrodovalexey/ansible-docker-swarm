@@ -1,0 +1,5 @@
+- name: Inventory validation
+  assert:
+    that:
+      - "groups['docker-swarm'] | length >= 3"
+    msg: "Number of hosts must be 3 or more"

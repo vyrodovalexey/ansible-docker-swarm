@@ -1,4 +1,11 @@
 ---
+- hosts: localhost
+  remote_user: root
+  strategy: free
+  roles:
+  - inventory-check
+
+
 - hosts: all
   remote_user: root
   strategy: free

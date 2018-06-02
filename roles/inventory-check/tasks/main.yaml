@@ -1,0 +1,3 @@
+---
+# Default Ansible YAML
+- include_tasks: inventory-check.yaml
